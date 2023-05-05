@@ -1,32 +1,29 @@
 import networkx as nx
 import python_datastructures as ds
 import matplotlib.pyplot as plt
-import numpy as np
-import pandas as pd
 import json
-
-# import dataset from JSON file
-# dataset = ds.Dataset('dataset/MOCK_DATA.json')
-
-# look at the first 5 rows of the dataset
-# dataset.head()
-
 
 file = open('dataset/MOCK_DATA.json')
 data = json.load(file)
 
 # create a graph
-G = nx.Graph()
+graph = nx.Graph()
 
 # add nodes to the graph
 for i in range(len(data)):
-    G.add_node(data[i]['id'])
+    graph.add_node(data[i]['employee_id'])
 
 # add edges to the graph
 for i in range(len(data)):
     if (data[i]['parent']):
-        G.add_edge(data[i]['parent'], data[i]['id'])
+        graph.add_edge(data[i]['parent'], data[i]['employee_id'])
 
+nx.draw(graph, with_labels=True)
+plt.show()
+
+
+
+'''
 # print the number of nodes and edges in the graph
 print("Number of edges: ", G.number_of_edges())
 
@@ -112,3 +109,4 @@ def dfs_recursive(graph, start, visited=None):
 
 # print the nodes visited using bfs
 print("BFS: ", bfs(G, 1))
+'''

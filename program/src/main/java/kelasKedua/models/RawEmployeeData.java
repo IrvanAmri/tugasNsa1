@@ -11,11 +11,10 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class EmployeeTree {
-    private int employeeId;
-    private EmployeeTree parent;
-    private EmployeeTree[] children;
-    private String employeeName;
-    private String departement;
+public class RawEmployeeData {
+    private int employee_id;
+    private int parent;
+    private String employee_name;
+    private String department;
     private Long salary;
 }
