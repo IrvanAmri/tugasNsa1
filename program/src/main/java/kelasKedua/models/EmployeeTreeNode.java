@@ -16,7 +16,7 @@ import lombok.ToString;
 @ToString
 public class EmployeeTreeNode implements TreeNode {
     private int employeeId;
-    private List<TreeNode> children;
+    private List<EmployeeTreeNode> employeeChildren;
     private String employeeName;
     private String departement;
     private Long salary;
@@ -32,14 +32,22 @@ public class EmployeeTreeNode implements TreeNode {
         this.employeeId = employeeId;
         this.employeeName = employeeName;
         this.departement = departement;
-        this.children = new ArrayList<TreeNode>();
+        this.employeeChildren = new ArrayList<EmployeeTreeNode>();
         this.salary = salary;
         this.insets = new Insets(employeeId);
     }
 
     @Override
     public List<TreeNode> children() {
-        return this.children;
+        List<TreeNode> treeNodes = new ArrayList<TreeNode>();
+        for (EmployeeTreeNode eTreeNode : employeeChildren) {
+            treeNodes.add(eTreeNode);
+        }
+        return treeNodes;
+    }
+
+    public List<EmployeeTreeNode> getEmployeeChildren() {
+        return employeeChildren;
     }
 
     @Override

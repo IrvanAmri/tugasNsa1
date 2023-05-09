@@ -13,7 +13,7 @@ import lombok.ToString;
 @ToString
 public class RawEmployeeData {
     private int employee_id;
-    private int parent;
+    private Integer parent;
     private String employee_name;
     private String department;
     private Long salary;

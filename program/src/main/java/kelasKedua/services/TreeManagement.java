@@ -2,14 +2,15 @@ package kelasKedua.services;
 
 import hu.webarticum.treeprinter.TreeNode;
 import hu.webarticum.treeprinter.printer.listing.ListingTreePrinter;
+import kelasKedua.models.EmployeeTreeNode;
 import lombok.Getter;
 
 @Getter
 public class TreeManagement {
-    private TreeNode root;
+    private EmployeeTreeNode root;
     private int size;
 
-    public TreeManagement(TreeNode root) {
+    public TreeManagement(EmployeeTreeNode root) {
         this.root = root;
         this.size = 1;
     }
@@ -19,15 +20,15 @@ public class TreeManagement {
         this.size = 0;
     }
 
-    public void addNode(int parentEmployeeId, TreeNode newNode){
+    public void addNode(int parentEmployeeId, EmployeeTreeNode newNode){
         if(this.root == null){
             this.root = newNode;
             this.size++;
         }
         else{
-            TreeNode parentNode = findNode(parentEmployeeId, this.root);
+            EmployeeTreeNode parentNode = findNode(parentEmployeeId, this.root);
             if(parentNode != null){
-                parentNode.children().add(newNode);
+                parentNode.getEmployeeChildren().add(newNode);
                 this.size++;
             }
             else{
@@ -36,13 +37,13 @@ public class TreeManagement {
         }
     }
 
-    private TreeNode findNode(int employeeId, TreeNode node){
-        if(node.insets().top() == employeeId){
+    private EmployeeTreeNode findNode(int employeeId, EmployeeTreeNode node){
+        if(node.getEmployeeId() == employeeId){
             return node;
         }
         else{
             for(TreeNode child : node.children()){
-                TreeNode result = findNode(employeeId, child);
+                EmployeeTreeNode result = findNode(employeeId, (EmployeeTreeNode) child);
                 if(result != null){
                     return result;
                 }

@@ -10,7 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import kelasKedua.models.EmployeeTreeNode;
 import kelasKedua.models.RawEmployeeData;
 
-// digunakan untuk memproses data mentah berda
+// digunakan untuk memproses data mentah
 public final class TreeRawProcessing {
     public static TreeManagement rawEmployeeDataToEmployeeTreeNode(String path) throws StreamReadException, DatabindException, IOException{
         //access json file from directory
@@ -22,7 +22,6 @@ public final class TreeRawProcessing {
         //read json file and map it to array of RawEmployeeData class
         /* 
          * rawEmployeeData is object that store raw data from json file
-         * next step is create A Tree from rawEmployeeDatas using EmployeeTree class as node
          */
         RawEmployeeData[] rawEmployeeDatas = objectMapper.readValue(json, RawEmployeeData[].class);
 
