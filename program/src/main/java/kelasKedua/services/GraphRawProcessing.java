@@ -18,20 +18,22 @@ import kelasKedua.models.RawEmployeeData;
 public final class GraphRawProcessing {
     private static RawEmployeeData start;
 
-    public static DefaultDirectedGraph<RawEmployeeData, DefaultEdge> rawEmployeeDataToEmployeeGraph(String path) throws StreamReadException, DatabindException, IOException{
-        //access json file from directory
+    public static DefaultDirectedGraph<RawEmployeeData, DefaultEdge> rawEmployeeDataToEmployeeGraph(String path)
+            throws StreamReadException, DatabindException, IOException {
+        // access json file from directory
         File json = new File(path);
 
-        //initialize object mapper from jackson library
+        // initialize object mapper from jackson library
         ObjectMapper objectMapper = new ObjectMapper();
-        
-        //read json file and map it to array of RawEmployeeData class
-        /* 
+
+        // read json file and map it to array of RawEmployeeData class
+        /*
          * rawEmployeeData is object that store raw data from json file
          */
         RawEmployeeData[] rawEmployeeDatas = objectMapper.readValue(json, RawEmployeeData[].class);
-        DefaultDirectedGraph<RawEmployeeData, DefaultEdge> directedGraph = new DefaultDirectedGraph<RawEmployeeData, DefaultEdge>(DefaultEdge.class);
-        
+        DefaultDirectedGraph<RawEmployeeData, DefaultEdge> directedGraph = new DefaultDirectedGraph<RawEmployeeData, DefaultEdge>(
+                DefaultEdge.class);
+
         for (RawEmployeeData rawEmployeeData : rawEmployeeDatas) {
             if (rawEmployeeData.getParent() == null) {
                 start = rawEmployeeData;
@@ -51,11 +53,12 @@ public final class GraphRawProcessing {
         return start;
     }
 
-    private static RawEmployeeData findEmployee(int employeeId, Graph<RawEmployeeData, DefaultEdge> graph, RawEmployeeData start){
+    private static RawEmployeeData findEmployee(int employeeId, Graph<RawEmployeeData, DefaultEdge> graph,
+            RawEmployeeData start) {
         Iterator<RawEmployeeData> iterator = new DepthFirstIterator<>(graph, start);
-        while(iterator.hasNext()){
+        while (iterator.hasNext()) {
             RawEmployeeData rawEmployeeData = iterator.next();
-            if(rawEmployeeData.getEmployee_id() == employeeId){
+            if (rawEmployeeData.getEmployee_id() == employeeId) {
                 return rawEmployeeData;
             }
         }
