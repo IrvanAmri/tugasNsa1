@@ -2,6 +2,8 @@ import networkx as nx
 import matplotlib.pyplot as plt
 from collections import deque
 import json
+import dask
+from dask.distributed import Client, progress
 
 file = open('dataset/source/MOCK_DATA.json')
 data = json.load(file)
@@ -22,6 +24,7 @@ for i in range(len(data)):
 nx.draw(graph, labels=labels, with_labels=True)
 
 
+@dask.delayed
 def dfs_traversal(graph, start):
     visited = set()
     stack = [start]
@@ -37,6 +40,7 @@ def dfs_traversal(graph, start):
     return dfs_tree
 
 
+@dask.delayed
 def bfs_traversal(graph, start):
     visited = set()
     queue = deque([start])
@@ -52,13 +56,23 @@ def bfs_traversal(graph, start):
     return bfs_tree
 
 
-# perform DFS traversal starting from the CEO (employee_id=1)
-print('DFS Traversal : ', end='')
-dfs_tree = dfs_traversal(graph, 1)
+# Create a Dask client
+client = Client()
+
+# Create delayed tasks for DFS and BFS traversals
+dfs_task = dfs_traversal(graph, 1)
+bfs_task = bfs_traversal(graph, 1)
+
+# Compute the delayed tasks in parallel
+dfs_result = dask.compute(dfs_task, scheduler='distributed')[0]
+bfs_result = dask.compute(bfs_task, scheduler='distributed')[0]
+
+# Print the results
+print('DFS Traversal : ')
+print(dfs_result)
 print()
 
-# perform BFS traversal starting from the CEO (employee_id=1)
-print('BFS Traversal : ', end='')
-bfs_tree = bfs_traversal(graph, 1)
+print('BFS Traversal : ')
+print(bfs_result)
 
 plt.show()

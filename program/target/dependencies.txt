@@ -1,0 +1,16 @@
+digraph "kelasKedua:program:jar:1.0-SNAPSHOT" { 
+	"kelasKedua:program:jar:1.0-SNAPSHOT" -> "junit:junit:jar:4.11:test" ; 
+	"kelasKedua:program:jar:1.0-SNAPSHOT" -> "org.jgrapht:jgrapht-core:jar:1.5.2:compile" ; 
+	"kelasKedua:program:jar:1.0-SNAPSHOT" -> "org.projectlombok:lombok:jar:1.18.26:provided" ; 
+	"kelasKedua:program:jar:1.0-SNAPSHOT" -> "com.fasterxml.jackson.core:jackson-databind:jar:2.15.0:compile" ; 
+	"kelasKedua:program:jar:1.0-SNAPSHOT" -> "org.jgrapht:jgrapht-ext:jar:1.0.1:compile" ; 
+	"kelasKedua:program:jar:1.0-SNAPSHOT" -> "hu.webarticum:tree-printer:jar:3.0.0:compile" ; 
+	"junit:junit:jar:4.11:test" -> "org.hamcrest:hamcrest-core:jar:1.3:test" ; 
+	"org.jgrapht:jgrapht-core:jar:1.5.2:compile" -> "org.jheaps:jheaps:jar:0.14:compile" ; 
+	"org.jgrapht:jgrapht-core:jar:1.5.2:compile" -> "org.apfloat:apfloat:jar:1.10.1:compile" ; 
+	"com.fasterxml.jackson.core:jackson-databind:jar:2.15.0:compile" -> "com.fasterxml.jackson.core:jackson-annotations:jar:2.15.0:compile" ; 
+	"com.fasterxml.jackson.core:jackson-databind:jar:2.15.0:compile" -> "com.fasterxml.jackson.core:jackson-core:jar:2.15.0:compile" ; 
+	"org.jgrapht:jgrapht-ext:jar:1.0.1:compile" -> "org.tinyjee.jgraphx:jgraphx:jar:2.0.0.1:compile" ; 
+	"org.jgrapht:jgrapht-ext:jar:1.0.1:compile" -> "jgraph:jgraph:jar:5.13.0.0:compile" ; 
+	"org.jgrapht:jgrapht-ext:jar:1.0.1:compile" -> "org.antlr:antlr4-runtime:jar:4.5.3:compile" ; 
+ } 

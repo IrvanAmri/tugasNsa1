@@ -1,54 +1,44 @@
 import json
 from anytree import Node, RenderTree
+import dask
+from dask.distributed import Client, progress
 
 with open('dataset/source/MOCK_DATA.json') as f:
     employees = json.load(f)
 
 employee_nodes = {}
 
+
+@dask.delayed
+def create_node(employee, parent_node):
+    employee_id = employee['employee_id']
+    employee_name = employee['employee_name']
+    if employee_id not in employee_nodes:
+        node = Node(employee_name, parent=parent_node)
+        employee_nodes[employee_id] = node
+        return node
+
+
+# Create a Dask client
+client = Client()
+
 # Create a root node for the tree
 ceo = [emp for emp in employees if emp['parent'] is None][0]
 root = Node(ceo['employee_name'])
 
-# Loop through the employees and create a node for each one
+# Create delayed tasks to create nodes for each employee
+node_tasks = []
 for employee in employees:
-    employee_id = employee['employee_id']
-    employee_name = employee['employee_name']
     parent_id = employee['parent']
-    if employee_id not in employee_nodes:
-        if parent_id is None:
-            employee_nodes[employee_id] = root
-            # Employee is the CEO
-            # root.children = [employee_nodes[employee_id]]
-        elif (parent_id == ceo['employee_id']):
-            employee_nodes[employee_id] = Node(employee_name, parent=root)
-        else:
-            # Employee has a parent, so add as a child node
-            parent_node = employee_nodes[parent_id]
-            employee_nodes[employee_id] = Node(
-                employee_name, parent=parent_node)
-            # parent_node.children = [employee_nodes[employee_id]]
+    if parent_id is None:
+        node_tasks.append(create_node(employee, root))
+    else:
+        parent_node = employee_nodes[parent_id]
+        node_tasks.append(create_node(employee, parent_node))
+
+# Compute the delayed tasks in parallel
+nodes = dask.compute(node_tasks, scheduler='distributed')[0]
 
 # Print the tree
 for pre, fill, node in RenderTree(root):
     print("%s%s" % (pre, node.name))
-
-
-class LinkedListNode:
-    def __init__(self, name):
-        self.name = name
-        self.next = None
-
-
-head = LinkedListNode(root.name)
-current = head
-for pre, fill, node in RenderTree(root):
-    if node is not root:
-        current.next = LinkedListNode(node.name)
-        current = current.next
-
-# Print the linked list
-current = head
-while current is not None:
-    print(current.name)
-    current = current.next

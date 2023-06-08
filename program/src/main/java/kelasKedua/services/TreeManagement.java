@@ -1,8 +1,12 @@
 package kelasKedua.services;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import hu.webarticum.treeprinter.TreeNode;
 import hu.webarticum.treeprinter.printer.listing.ListingTreePrinter;
 import kelasKedua.models.EmployeeTreeNode;
+import kelasKedua.FindNodeThread;
 import lombok.Getter;
 
 @Getter
@@ -20,31 +24,56 @@ public class TreeManagement {
         this.size = 0;
     }
 
-    public void addNode(int parentEmployeeId, EmployeeTreeNode newNode){
-        if(this.root == null){
+    public void addNode(int parentEmployeeId, EmployeeTreeNode newNode) {
+        if (this.root == null) {
             this.root = newNode;
             this.size++;
-        }
-        else{
+        } else {
             EmployeeTreeNode parentNode = findNode(parentEmployeeId, this.root);
-            if(parentNode != null){
+            if (parentNode != null) {
                 parentNode.getEmployeeChildren().add(newNode);
                 this.size++;
-            }
-            else{
+            } else {
                 System.out.println("Parent not found");
             }
         }
     }
 
-    private EmployeeTreeNode findNode(int employeeId, EmployeeTreeNode node){
-        if(node.getEmployeeId() == employeeId){
+    public EmployeeTreeNode parallelFindNode(int employeeId, EmployeeTreeNode node) throws InterruptedException {
+        if (node.getEmployeeId() == employeeId) {
             return node;
+        } else {
+            if (node.children().size() == 0) {
+                return null;
+            } else {
+                ArrayList<FindNodeThread> threads = new ArrayList<FindNodeThread>();
+                List<TreeNode> childrens = node.children();
+                for (int i = 0; i < childrens.size(); i++) {
+                    FindNodeThread newThread = new FindNodeThread(employeeId, node);
+                    newThread.start();
+                    threads.add(newThread);
+                }
+                for (FindNodeThread thread : threads) {
+                    thread.join();
+                }
+                for (FindNodeThread thread : threads) {
+                    EmployeeTreeNode result = thread.getResult();
+                    if (result != null) {
+                        return result;
+                    }
+                }
+                return null;
+            }
         }
-        else{
-            for(TreeNode child : node.children()){
+    }
+
+    public static EmployeeTreeNode findNode(int employeeId, EmployeeTreeNode node) {
+        if (node.getEmployeeId() == employeeId) {
+            return node;
+        } else {
+            for (TreeNode child : node.children()) {
                 EmployeeTreeNode result = findNode(employeeId, (EmployeeTreeNode) child);
-                if(result != null){
+                if (result != null) {
                     return result;
                 }
             }
@@ -52,7 +81,7 @@ public class TreeManagement {
         return null;
     }
 
-    public void printTree(){
+    public void printTree() {
         new ListingTreePrinter().print(root);
     }
 

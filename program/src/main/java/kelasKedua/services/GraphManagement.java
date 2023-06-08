@@ -41,8 +41,9 @@ public class GraphManagement {
         }
 
         // TODO: visualize graph
-        JGraphModelAdapter<RawEmployeeData, DefaultEdge> graphAdapter = new JGraphModelAdapter<RawEmployeeData, DefaultEdge>(
-                directedGraph);
+        // JGraphModelAdapter<RawEmployeeData, DefaultEdge> graphAdapter = new
+        // JGraphModelAdapter<RawEmployeeData, DefaultEdge>(
+        // directedGraph);
         // mxIGraphLayout layout = new mxCircleLayout(graphAdapter);
         // layout.execute(graphAdapter.getDefaultParent());
 
@@ -54,13 +55,13 @@ public class GraphManagement {
         // ImageIO.write(image, "PNG", imgFile);
 
         // create a visualization using JGraph, via an adapter ???????
-        JFrame frame = new JFrame();
-        frame.setSize(400, 400);
-        JGraph jgraph = new JGraph(graphAdapter);
-        frame.getContentPane().add(jgraph);
-        frame.setVisible(true);
-        while (true) {
-            Thread.sleep(2000);
-        }
+        // JFrame frame = new JFrame();
+        // frame.setSize(400, 400);
+        // JGraph jgraph = new JGraph(graphAdapter);
+        // frame.getContentPane().add(jgraph);
+        // frame.setVisible(true);
+        // while (true) {
+        // Thread.sleep(2000);
+        // }
     }
 }
