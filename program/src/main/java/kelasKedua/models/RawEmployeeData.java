@@ -6,11 +6,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @ToString
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class RawEmployeeData {
     private int employee_id;
     private Integer parent;

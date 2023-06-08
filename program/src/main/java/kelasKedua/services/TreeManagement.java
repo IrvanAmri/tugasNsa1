@@ -25,11 +25,16 @@ public class TreeManagement {
     }
 
     public void addNode(int parentEmployeeId, EmployeeTreeNode newNode) {
-        if (this.root == null) {
+        if (this.root == null || parentEmployeeId == -1) {
             this.root = newNode;
             this.size++;
         } else {
-            EmployeeTreeNode parentNode = findNode(parentEmployeeId, this.root);
+            EmployeeTreeNode parentNode;
+            try {
+                parentNode = parallelFindNode(parentEmployeeId, this.root);
+            } catch(InterruptedException e) {
+                parentNode = null;
+            }
             if (parentNode != null) {
                 parentNode.getEmployeeChildren().add(newNode);
                 this.size++;
@@ -51,14 +56,17 @@ public class TreeManagement {
                 for (int i = 0; i < childrens.size(); i++) {
                     FindNodeThread newThread = new FindNodeThread(employeeId, node);
                     newThread.start();
+                    System.out.println("Started thread " + i);
                     threads.add(newThread);
                 }
                 for (FindNodeThread thread : threads) {
                     thread.join();
                 }
-                for (FindNodeThread thread : threads) {
+                for (int i = 0; i < threads.size(); i++) {
+                    FindNodeThread thread = threads.get(i);
                     EmployeeTreeNode result = thread.getResult();
                     if (result != null) {
+                        System.out.println("Thread " + i + " finished with result");
                         return result;
                     }
                 }

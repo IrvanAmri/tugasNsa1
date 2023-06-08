@@ -24,7 +24,6 @@ public class FindNodeThread extends Thread {
     @Override
     public synchronized void run() {
         result = TreeManagement.findNode(employeeId, node);
-        
     }
 
 }

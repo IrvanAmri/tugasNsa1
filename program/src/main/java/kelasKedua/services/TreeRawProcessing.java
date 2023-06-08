@@ -33,7 +33,11 @@ public final class TreeRawProcessing {
                 rawEmployeeData.getDepartment(),
                 rawEmployeeData.getSalary()
             );
-            treeManagement.addNode(rawEmployeeData.getParent(), employeeTreeNode);
+            if (rawEmployeeData.getParent() != null) {
+                treeManagement.addNode(rawEmployeeData.getParent(), employeeTreeNode);
+            } else {
+                treeManagement.addNode(-1, employeeTreeNode);
+            }
         }
         return treeManagement;
     }
